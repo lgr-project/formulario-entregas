@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Preencha os dados de uma entrega e copie a mensagem formatada para o WhatsApp.">
+  <meta name="color-scheme" content="light">
+  <title>Formulário de entrega</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+</head>
+<body>
+  <main class="app">
+    <header class="app-header">
+      <div class="app-icon" aria-hidden="true">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+          <path d="m12 3 9 5-9 5-9-5 9-5Z"/>
+          <path d="M3 8v9l9 5 9-5V8M12 13v9M7.5 5.5l9 5v4"/>
+        </svg>
+      </div>
+      <div>
+        <h1>Formulário de entrega</h1>
+        <p>Preencha os dados e prepare a mensagem para o WhatsApp.</p>
+      </div>
+    </header>
+
+    <div class="workspace">
+      <form id="entrega-form" class="panel form-panel" autocomplete="off">
+        <div class="panel-heading">
+          <span class="step" aria-hidden="true">01</span>
+          <h2>Dados da entrega</h2>
+          <button id="limpar" class="clear-button" type="reset" aria-label="Apagar todos os dados" title="Apagar todos os dados">
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 6h18M9 6V4a1 1 0 0 1 1-1h4a1 1 0 0 1 1 1v2M5 6l1 14a1 1 0 0 0 1 1h10a1 1 0 0 0 1-1l1-14M10 10v7M14 10v7"/></svg>
+          </button>
+        </div>
+
+        <div class="fields">
+          <div class="row customer-row">
+            <div class="field">
+              <label for="entrega">Entrega</label>
+              <input id="entrega" name="entrega" type="text" inputmode="numeric" pattern="[0-9]+" maxlength="9" placeholder="01" title="Use apenas números, como 01 ou 12." required>
+            </div>
+            <div class="field">
+              <label for="cliente">Nome do cliente</label>
+              <input id="cliente" name="cliente" type="text" maxlength="120" placeholder="Aline ou Italo" required>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="endereco">Endereço</label>
+            <input id="endereco" name="endereco" type="text" maxlength="240" placeholder="Avenida São Paulo, 3435" required>
+          </div>
+
+          <div class="field">
+            <label for="complemento">Complemento <span class="optional">opcional</span></label>
+            <input id="complemento" name="complemento" type="text" maxlength="240" placeholder="Bloco 7 - 34">
+          </div>
+
+          <div class="row payment-row">
+            <div class="field">
+              <label for="valor">Valor</label>
+              <div class="money-input">
+                <span aria-hidden="true">R$</span>
+                <input id="valor" name="valor" type="text" inputmode="numeric" maxlength="20" placeholder="345,00" aria-label="Valor em reais. Digite apenas números, incluindo os centavos." title="Digite apenas números: 34500 vira 345,00." required>
+              </div>
+            </div>
+            <div class="field">
+              <label for="pagamento">Forma de pagamento</label>
+              <select id="pagamento" name="pagamento" required>
+                <option value="" disabled selected>Selecione</option>
+                <option>Dinheiro</option>
+                <option>Débito</option>
+                <option>Crédito</option>
+                <option>PIX QRCode</option>
+                <option>PAGO PIX</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="field">
+            <label for="produtos">Produtos</label>
+            <input id="produtos" name="produtos" type="text" maxlength="300" placeholder="cuia, tesoura e seda" required>
+          </div>
+
+          <div class="field">
+            <label for="taxa">Taxa <span class="optional">opcional</span></label>
+            <div class="money-input">
+              <span aria-hidden="true">R$</span>
+              <input id="taxa" name="taxa" type="text" inputmode="numeric" maxlength="20" placeholder="10,00" aria-label="Taxa em reais. Digite apenas números, incluindo os centavos." title="Digite apenas números: 1000 vira 10,00.">
+            </div>
+          </div>
+        </div>
+
+        <div class="panel-footer">
+          <button class="button primary" type="submit">
+            Enviar
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14m-6-6 6 6-6 6"/></svg>
+          </button>
+          <p class="status" id="form-status" role="status" aria-live="polite"></p>
+        </div>
+      </form>
+
+      <section class="panel result-panel" aria-labelledby="result-title">
+        <div class="panel-heading">
+          <span class="step" aria-hidden="true">02</span>
+          <h2 id="result-title">Resultado</h2>
+          <span class="badge">WhatsApp</span>
+        </div>
+
+        <div class="message-area">
+          <div class="message-card">
+            <label class="message-label" for="resultado">MENSAGEM PARA COPIAR</label>
+            <textarea id="resultado" readonly spellcheck="false" aria-describedby="format-hint" placeholder="Sua mensagem aparece aqui depois de clicar em Enviar."></textarea>
+          </div>
+          <p id="format-hint" class="hint">O número e o nome recebem <strong>*asteriscos*</strong> para ficar em negrito no WhatsApp.</p>
+        </div>
+
+        <div class="panel-footer">
+          <button id="copiar" class="button secondary" type="button" disabled>
+            <svg aria-hidden="true" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="8" width="12" height="13" rx="2"/><path d="M16 8V5a2 2 0 0 0-2-2H5a2 2 0 0 0-2 2v9a2 2 0 0 0 2 2h3"/></svg>
+            <span id="copy-label">Copiar</span>
+          </button>
+          <p class="status" id="copy-status" role="status" aria-live="polite"></p>
+        </div>
+      </section>
+    </div>
+    <noscript>Ative o JavaScript no navegador para gerar e copiar a mensagem.</noscript>
+  </main>
+</body>
+</html>
